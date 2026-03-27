@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог Хозяюшка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>КАТАЛОГ</h1>
+    <p>Продукция Хозяюшка ИП "Левченко"</p>
+    <p>ТМ &lt;ХОЗЯЮШКА&gt;</p>
+    <div class="header-controls">
+      <button id="themeToggle">🌙</button>
+    </div>
+  </header>
+
+  <!-- Панель поиска и фильтра -->
+  <div class="search-filter-panel">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или описанию...">
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="filter-container">
+      <select id="categoryFilter">
+        <option value="">Все категории</option>
+        <option value="Шашлык">Шашлык</option>
+        <option value="Котлеты">Котлеты</option>
+        <option value="Фрикадельки">Фрикадельки</option>
+        <option value="Манты">Манты</option>
+        <option value="Буузы">Буузы</option>
+        <option value="Пельмени">Пельмени</option>
+        <option value="Хинкали">Хинкали</option>
+        <option value="Вареники">Вареники</option>
+        <option value="Голубцы">Голубцы</option>
+        <option value="Тефтели">Тефтели</option>
+        <option value="Чебуреки">Чебуреки</option>
+        <option value="Рыбные продукты">Рыбные продукты</option>
+        <option value="Фарш">Фарш</option>
+        <option value="Маринованные продукты">Маринованные продукты</option>
+        <option value="Овощи">Овощи</option>
+      </select>
+    </div>
+    <div class="stats-container">
+      <span id="productCount" class="product-count">Загрузка...</span>
+    </div>
+  </div>
+
+  <main>
+    <div id="productsContainer"></div>
+  </main>
+
+  <!-- Модал для изображения/видео -->
+  <div id="imageModal" class="modal hidden">
+    <span class="close" id="closeImageModal">&times;</span>
+    <div id="modalContent"></div>
+  </div>
+
+  <!-- Toast уведомления -->
+  <div id="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
