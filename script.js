@@ -1,16 +1,6 @@
 // socket removed
 let products = [
   {
-    "id": "1",
-    "name": "Сочные голени для запекания",
-    "description": " Состав: \r\nголени \r\nпряностями, \r\nШашлык \r\nсо специями, \r\nсоль, \r\nчеснок, \r\nсвиной: \r\nперец черный",
-    "price": 2000,
-    "image": "uploads/9cc6b3e3-aa8c-4591-8d9d-74a66f71eaf7.png",
-    "video": null,
-    "active": true,
-    "category": "Маринованные продукты"
-  },
-  {
     "id": "d3fc9a8e-c970-4f10-9682-7fc2c1de5628",
     "name": "Шашлык Свиной",
     "description": "Состав: феле свинины, лук репчатый, \r\nсоль п/п, перец ч/м, маринад\r\n\r\n",
@@ -129,6 +119,16 @@ let products = [
     "video": null,
     "active": true,
     "category": "Буузы"
+  },
+  {
+    "id": "1",
+    "name": "Сочные голени для запекания",
+    "description": " Состав: \r\nголени \r\nпряностями, \r\nШашлык \r\nсо специями, \r\nсоль, \r\nчеснок, \r\nсвиной: \r\nперец черный",
+    "price": 2000,
+    "image": "uploads/9cc6b3e3-aa8c-4591-8d9d-74a66f71eaf7.png",
+    "video": null,
+    "active": true,
+    "category": "Маринованные продукты"
   },
   {
     "id": "f06640d8-57b3-45ad-9245-16eb9a16be4a",
