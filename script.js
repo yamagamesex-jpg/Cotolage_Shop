@@ -714,7 +714,7 @@ let products = [
       "name": "Утиная грудка",
       "description": "3600 тг/кг",
       "price": 3600,
-      "image": "photo_5352996059916997714_y.png",
+      "image": "uploads/photo_5352996059916997714_y.png",
       "video": null,
       "active": true,
       "category": "Грудки"
