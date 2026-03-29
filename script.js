@@ -708,6 +708,16 @@ let products = [
     "video": null,
     "active": true,
     "category": "Чебуреки"
+  },
+  {
+      "id": "afs1fd1-d2ac-4c86-81f1-d7e5f8b1cd0d",
+      "name": "Утиная грудка",
+      "description": "3600 тг/кг",
+      "price": 3600,
+      "image": "photo_5352996059916997714_y.png",
+      "video": null,
+      "active": true,
+      "category": "Грудки"
   }
 ];
 let filteredProducts = [];
