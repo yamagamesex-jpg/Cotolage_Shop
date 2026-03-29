@@ -711,7 +711,7 @@ let products = [
   },
   {
       "id": "afs1fd1-d2ac-4c86-81f1-d7e5f8b1cd0d",
-      "name": "Копчёная Утиная Грудка",
+      "name": "Утиная грудка",
       "description": "3600 тг/кг",
       "price": 3600,
       "image": "uploads/photo_5352996059916997714_y.png",
@@ -886,12 +886,53 @@ function formatPrice(price) {
 
 // Открытие модала с изображением
 function openImageModal(product) {
-  if (product.video) {
-    modalContent.innerHTML = `<video controls autoplay><source src="./uploads/${product.video}" type="video/mp4"></video>`;
-  } else if (product.image && product.image !== 'BLANK') {
-    modalContent.innerHTML = `<img src="./uploads/${product.image}" alt="${product.name}">`;
-  }
-  imageModal.classList.remove('hidden');
+
+let media = ''
+
+if (product.video) {
+media = `
+<video controls autoplay>
+<source src="./uploads/${product.video}" type="video/mp4">
+</video>
+`
+}
+
+else if (product.image && product.image !== 'BLANK') {
+media = `
+<img src="${product.image}" alt="${product.name}">
+`
+}
+
+modalContent.innerHTML = `
+<div class="modal-product">
+
+<div class="modal-media">
+${media}
+</div>
+
+<div class="modal-info">
+
+<h2 class="modal-title">
+${product.name || "Название продукта"}
+</h2>
+
+<p class="modal-desc">
+${product.description || "Описание продукта появится здесь."}
+</p>
+
+<p class="product-price">${formatPrice(product.price)}</p>
+
+<div class="modal-actions">
+
+
+</div>
+
+</div>
+
+</div>
+`
+
+imageModal.classList.remove('hidden')
 }
 
 // Закрытие модала с изображением
