@@ -6,9 +6,9 @@
   <title>Каталог Хозяюшка</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-    <!-- Yandex.Metrika counter -->
+  <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -23,14 +23,25 @@
 <!-- /Yandex.Metrika counter -->
 </head>
 <body>
-  <header>
-    <h1>КАТАЛОГ</h1>
-    <p>Продукция Хозяюшка ИП "Левченко"</p>
-    <p>ТМ &lt;ХОЗЯЮШКА&gt;</p>
-    <div class="header-controls">
-      <button id="themeToggle">🌙</button>
+ <header class="main-header">
+  <div class="header-content">
+    <div class="version-badge">V1.1</div>
+
+    <div class="header-text">
+      <h1 class="logo">ХОЗЯЮШКА</h1>
+      <p class="subtitle">Каталог продукции</p>
+      <p class="company">ИП "Левченко" • ТМ «Хозяюшка»</p>
     </div>
-  </header>
+
+  
+    <div class="header-controls">
+      <button id="themeToggle" class="theme-btn" aria-label="Сменить тему">
+        <img id="themeIcon" src="https://img.icons8.com/ios-filled/48/ffffff/moon-symbol.png" alt="Тема: светлая" />
+      </button>
+    </div>
+
+  </div>
+</header>
 
   <!-- Панель поиска и фильтра -->
   <div class="search-filter-panel">
