@@ -332,21 +332,7 @@ header p {
 }
 
 /* Панель поиска и фильтра */
-.search-filter-panel {
-  background: var(--card-bg);
-  padding: 1.5rem;
-  margin: 1rem auto;
-  max-width: 1200px;
-  border-radius: 15px;
-  box-shadow: var(--card-shadow);
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-  animation: slideInUp 0.6s ease-out;
-  border: 1px solid var(--border-color);
-  display: none !important;
-}
+.search-filter-panel { display: none !important; }
 
 .search-container {
   flex: 1;
