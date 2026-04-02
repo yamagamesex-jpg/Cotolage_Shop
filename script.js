@@ -798,29 +798,81 @@ categoryFilter.addEventListener('change', filterProducts);
 // Смена темы
 themeToggle.addEventListener('click', toggleTheme);
 
+function createRevealCircle() {
+  let circle = document.querySelector('.theme-reveal');
+  if (!circle) {
+    circle = document.createElement('div');
+    circle.classList.add('theme-reveal');
+    document.body.appendChild(circle);
+  }
+  return circle;
+}
+
+function moveRevealCircleToButton(toDark) {
+  const rect = themeToggle.getBoundingClientRect();
+  const circle = createRevealCircle();
+
+  circle.style.left = `${rect.left + rect.width / 2}px`;
+  circle.style.top = `${rect.top + rect.height / 2}px`;
+
+  circle.classList.remove('to-dark', 'to-light', 'expanded');
+  void circle.offsetWidth;
+
+  circle.classList.add(toDark ? 'to-dark' : 'to-light');
+
+  requestAnimationFrame(() => {
+    circle.classList.add('expanded');
+  });
+
+  return circle;
+}
+
+function clearRevealCircle(circle) {
+  if (!circle) return;
+  setTimeout(() => {
+    circle.classList.remove('expanded');
+    setTimeout(() => {
+      if (circle && circle.parentNode) circle.parentNode.removeChild(circle);
+    }, 300);
+  }, 500);
+}
+
+function updateThemeIcon(isDark) {
+  const themeIcon = document.getElementById('themeIcon');
+  if (!themeIcon) return;
+
+  if (isDark) {
+    themeIcon.src = 'https://img.icons8.com/ios-filled/48/ffffff/sun.png';
+    themeIcon.alt = 'Тема: тёмная (натисните для светлой)';
+  } else {
+    themeIcon.src = 'https://img.icons8.com/ios-filled/48/ffffff/moon-symbol.png';
+    themeIcon.alt = 'Тема: светлая (натисните для тёмной)';
+  }
+}
+
 // Функция смены темы
 function toggleTheme() {
   const body = document.body;
   const isDark = body.classList.contains('dark-theme');
-  
-  if (isDark) {
-    body.classList.remove('dark-theme');
-    body.classList.add('light-theme');
-    themeToggle.textContent = '🌙';
-    localStorage.setItem('theme', 'light');
-  } else {
-    body.classList.remove('light-theme');
-    body.classList.add('dark-theme');
-    themeToggle.textContent = '☀️';
-    localStorage.setItem('theme', 'dark');
-  }
+  const toDark = !isDark;
+
+  const reveal = moveRevealCircleToButton(toDark);
+
+  setTimeout(() => {
+    body.classList.toggle('dark-theme', toDark);
+    body.classList.toggle('light-theme', !toDark);
+    updateThemeIcon(toDark);
+    localStorage.setItem('theme', toDark ? 'dark' : 'light');
+
+    clearRevealCircle(reveal);
+  }, 180);
 }
 
 // Загрузка темы из localStorage
 function loadTheme() {
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.body.classList.add(`${savedTheme}-theme`);
-  themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  updateThemeIcon(savedTheme === 'dark');
 }
 
 // Отрисовка продуктов
@@ -857,7 +909,8 @@ function createProductCard(product) {
   if (product.video) {
     mediaElement = `<video class="product-video" src="./uploads/${product.video}" controls></video>`;
   } else if (product.image && product.image !== 'BLANK') {
-    mediaElement = `<img class="product-image" src="${product.image}" alt="${product.name}">`;
+    const imagePath = product.image.startsWith('/') ? product.image : `./${product.image}`;
+    mediaElement = `<img class="product-image" src="${imagePath}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x300?text=Фото+нет'">`;
   } else {
     mediaElement = `<div class="product-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">BLANK</div>`;
   }
@@ -877,17 +930,27 @@ function createProductCard(product) {
     </div>
   `;
 
-  // Обработчики событий
-  const media = card.querySelector('.product-image, .product-video');
-  if (media && media.tagName === 'IMG') {
-    media.addEventListener('click', () => openImageModal(product));
-  }
+  // Обработчики событий: открываем модалку по клику на картинку / видео / фоновой карточке
+  const mediaElements = card.querySelectorAll('.product-image, .product-video, .product-image img, .product-video video');
+  mediaElements.forEach(media => {
+    media.addEventListener('click', (event) => {
+      const target = event.currentTarget;
+      if (target.classList.contains('product-image') || target.tagName === 'IMG') {
+        target.classList.add('click-animate');
+        setTimeout(() => target.classList.remove('click-animate'), 380);
+      }
+      openImageModal(product);
+    });
+  });
 
   return card;
 }
 
 // Форматирование цены
 function formatPrice(price) {
+  if (price === undefined || price === null || price === 0) {
+    return 'Не указано';
+  }
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
     currency: 'KZT'
@@ -908,9 +971,10 @@ media = `
 }
 
 else if (product.image && product.image !== 'BLANK') {
-media = `
-<img src="${product.image}" alt="${product.name}">
-`
+  const imagePath = product.image.startsWith('/') ? product.image : `./${product.image}`;
+  media = `
+  <img src="${imagePath}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600?text=Фото+нет'">
+  `;
 }
 
 modalContent.innerHTML = `
@@ -970,25 +1034,46 @@ document.addEventListener('keydown', (e) => {
 // Intersection Observer для скролл анимаций
 function setupScrollAnimations() {
   const options = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: [0, 0.1, 0.3, 0.6],
+    rootMargin: '0px 0px -10px 0px'
   };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+      const card = entry.target;
+
+      if (entry.intersectionRatio > 0.02) {
+        const progress = Math.min(1, entry.intersectionRatio / 0.6);
+        card.style.opacity = progress;
+        card.style.transform = `translateY(${(1 - progress) * 24}px) scale(${0.98 + progress * 0.02})`;
+      }
+
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+        card.classList.add('visible');
+        card.classList.add('sticky-shadow');
+      } else {
+        card.classList.remove('sticky-shadow');
+      }
+
+      if (entry.intersectionRatio > 0.6) {
+        card.classList.add('in-view');
       }
     });
   }, options);
 
-  // Наблюдаем за всеми карточками
-  setTimeout(() => {
+  document.querySelectorAll('.product-card').forEach(card => {
+    observer.observe(card);
+  });
+
+  window.addEventListener('scroll', () => {
     document.querySelectorAll('.product-card').forEach(card => {
-      observer.observe(card);
+      const rect = card.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top < window.innerHeight) {
+        const key = 1 - rect.top / window.innerHeight;
+        card.style.filter = `drop-shadow(0 ${5 + key * 20}px ${10 + key * 30}px rgba(0,0,0,${0.15 + key * 0.2}))`;
+      }
     });
-  }, 100);
+  });
 }
 
 // Параллакс эффект при скроле
