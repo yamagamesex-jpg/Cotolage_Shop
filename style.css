@@ -345,6 +345,7 @@ header p {
   flex-wrap: wrap;
   animation: slideInUp 0.6s ease-out;
   border: 1px solid var(--border-color);
+  display: none !important;
 }
 
 .search-container {
