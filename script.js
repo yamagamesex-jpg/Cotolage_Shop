@@ -721,7 +721,7 @@ let products = [
   },
   {
     "id": "d3fc9a8e-c970-4f10-9682-7fc2c1de5628",
-    "name": "Сосиска в тесте",
+    "name": "Сосиски в тесте",
     "description": "Состав : тесто дрожжевое , сосиска куринная",
     "price": 0,
     "image": "uploads/e4be14e8-7034-4cbc-8bd3-8784229b90d1.jpeg",
