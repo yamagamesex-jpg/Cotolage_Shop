@@ -44,7 +44,43 @@
 </header>
 
   
-   <!-- Панель поиска и фильтра -->
+  
+  <!-- Панель поиска и фильтра -->
+  <div class="search-filter-panel">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или описанию...">
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="filter-container">
+      <select id="categoryFilter">
+        <option value="">Все категории</option>
+        <option value="Шашлык">Шашлык</option>
+        <option value="Котлеты">Котлеты</option>
+        <option value="Фрикадельки">Фрикадельки</option>
+        <option value="Манты">Манты</option>
+        <option value="Буузы">Буузы</option>
+        <option value="Пельмени">Пельмени</option>
+        <option value="Хинкали">Хинкали</option>
+        <option value="Вареники">Вареники</option>
+        <option value="Голубцы">Голубцы</option>
+        <option value="Тефтели">Тефтели</option>
+        <option value="Чебуреки">Чебуреки</option>
+        <option value="Рыбные продукты">Рыбные продукты</option>
+        <option value="Фарш">Фарш</option>
+        <option value="Маринованные продукты">Маринованные продукты</option>
+        <option value="Овощи">Овощи</option>
+        <option value="Грудки">Грудки</option>
+        <option value="остальное">остальное</option>
+      </select>
+    </div>
+    <div class="stats-container">
+      <span id="productCount" class="product-count">Загрузка...</span>
+    </div>
+  </div>
+
+  <main>
+    <div id="productsContainer"></div>
+  </main>
 
 
   <!-- Модал для изображения/видео -->
