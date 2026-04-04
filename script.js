@@ -125,7 +125,7 @@ let products = [
     "name": "Сочные голени для запекания",
     "description": " Состав: \r\nголени \r\nпряностями, \r\nШашлык \r\nсо специями, \r\nсоль, \r\nчеснок, \r\nсвиной: \r\nперец черный",
     "price": 2000,
-    "image": "uploads/9cc6b3e3-aa8c-4591-8d9d-74a66f71eaf7.png",
+    "image": "uploads/photo_5370876966547952483_x.jpg",
     "video": null,
     "active": true,
     "category": "Маринованные продукты"
@@ -725,6 +725,16 @@ let products = [
     "description": "Состав : тесто дрожжевое , сосиска куринная",
     "price": 1700,
     "image": "uploads/e4be14e8-7034-4cbc-8bd3-8784229b90d1.jpeg",
+    "video": null,
+    "active": true,
+    "category": "остальное"
+  },
+  {
+    "id": "d3fc9a8e-c970-4f10-9682-7fc2c1de5628",
+    "name": "Ребра свиные горячего копчения",
+    "description": "4000 тг/кг",
+    "price": 4000,
+    "image": "uploads/photo_5370876966547952484_y.jpg",
     "video": null,
     "active": true,
     "category": "остальное"
