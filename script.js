@@ -723,7 +723,7 @@ let products = [
     "id": "d3fc9a8e-c970-4f10-9682-7fc2c1de5628",
     "name": "Сосиски в тесте",
     "description": "Состав : тесто дрожжевое , сосиска куринная",
-    "price": 1700,
+    "price": 0,
     "image": "uploads/e4be14e8-7034-4cbc-8bd3-8784229b90d1.jpeg",
     "video": null,
     "active": true,
@@ -741,6 +741,8 @@ let products = [
   }
 ];
 let filteredProducts = [];
+let scrollObserver = null;
+let scrollHandlerAttached = false;
 
 // Элементы DOM
 const productsContainer = document.getElementById('productsContainer');
@@ -895,6 +897,9 @@ function renderProducts() {
 
   // Обновляем счетчик товаров
   updateProductCount();
+
+  // Обновляем пересозданные карточки в IntersectionObserver, чтобы анимация работала при фильтре
+  setupScrollAnimations();
 }
 
 // Обновление счетчика товаров
@@ -925,22 +930,21 @@ function createProductCard(product) {
     mediaElement = `<div class="product-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">BLANK</div>`;
   }
 
+  // Построение новой укороченной премиальной карточки
   card.innerHTML = `
     ${mediaElement}
     <div class="product-info">
-      <div class="product-header">
-        <h3 class="product-name">${product.name}</h3>
-        ${product.category ? `<span class="product-category">${product.category}</span>` : ''}
+      ${product.category ? `<span class="product-badge">${product.category}</span>` : ''}
+      <h3 class="product-title">${product.name}</h3>
+      <p class="product-description">${product.description.replace(/\r\n/g, ' ').trim()}</p>
+      <div class="product-footer">
+        <p class="product-price">${formatPrice(product.price)}</p>
+        <button class="product-button" type="button">Посмотреть</button>
       </div>
-      <p class="product-description">${product.description}</p>
-      <p class="product-price">${formatPrice(product.price)}</p>
-      <span class="product-status ${product.active ? 'active' : 'inactive'}">
-        ${product.active ? 'В наличии' : 'Нет в наличии'}
-      </span>
     </div>
   `;
 
-  // Обработчики событий: открываем модалку по клику на картинку / видео / фоновой карточке
+  // Обработчики событий: открываем модалку по клику на картинку/видео и по кнопке "Посмотреть"
   const mediaElements = card.querySelectorAll('.product-image, .product-video, .product-image img, .product-video video');
   mediaElements.forEach(media => {
     media.addEventListener('click', (event) => {
@@ -952,6 +956,11 @@ function createProductCard(product) {
       openImageModal(product);
     });
   });
+
+  const viewBtn = card.querySelector('.product-button');
+  if (viewBtn) {
+    viewBtn.addEventListener('click', () => openImageModal(product));
+  }
 
   return card;
 }
@@ -1043,47 +1052,50 @@ document.addEventListener('keydown', (e) => {
 
 // Intersection Observer для скролл анимаций
 function setupScrollAnimations() {
+  if (scrollObserver) {
+    scrollObserver.disconnect();
+  }
+
   const options = {
     threshold: [0, 0.1, 0.3, 0.6],
-    rootMargin: '0px 0px -10px 0px'
+    rootMargin: '0px 0px -50px 0px'
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const card = entry.target;
+      const index = parseInt(card.dataset.index) || 0;
 
-      if (entry.intersectionRatio > 0.02) {
-        const progress = Math.min(1, entry.intersectionRatio / 0.6);
-        card.style.opacity = progress;
-        card.style.transform = `translateY(${(1 - progress) * 24}px) scale(${0.98 + progress * 0.02})`;
+      if (entry.isIntersecting && !card.classList.contains('visible')) {
+        card.classList.add('visible');
       }
 
       if (entry.isIntersecting) {
-        card.classList.add('visible');
         card.classList.add('sticky-shadow');
       } else {
         card.classList.remove('sticky-shadow');
       }
-
-      if (entry.intersectionRatio > 0.6) {
-        card.classList.add('in-view');
-      }
     });
   }, options);
 
-  document.querySelectorAll('.product-card').forEach(card => {
-    observer.observe(card);
+  document.querySelectorAll('.product-card').forEach((card, index) => {
+    card.dataset.index = index;
+    card.classList.remove('visible', 'slide-left', 'slide-right'); // Reset for re-animation
+    scrollObserver.observe(card);
   });
 
-  window.addEventListener('scroll', () => {
-    document.querySelectorAll('.product-card').forEach(card => {
-      const rect = card.getBoundingClientRect();
-      if (rect.top >= 0 && rect.top < window.innerHeight) {
-        const key = 1 - rect.top / window.innerHeight;
-        card.style.filter = `drop-shadow(0 ${5 + key * 20}px ${10 + key * 30}px rgba(0,0,0,${0.15 + key * 0.2}))`;
-      }
+  if (!scrollHandlerAttached) {
+    window.addEventListener('scroll', () => {
+      document.querySelectorAll('.product-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top < window.innerHeight) {
+          const key = 1 - rect.top / window.innerHeight;
+          card.style.filter = `drop-shadow(0 ${5 + key * 20}px ${10 + key * 30}px rgba(0,0,0,${0.15 + key * 0.2}))`;
+        }
+      });
     });
-  });
+    scrollHandlerAttached = true;
+  }
 }
 
 // Параллакс эффект при скроле
