@@ -748,6 +748,16 @@ let products = [
     "video": null,
     "active": true,
     "category": "остальное"
+  },
+  {
+    "id": "d3fc9a8e-c970-4f10-9682-7fc2c1de5628",
+    "name": "Сырники Свежемороженные",
+    "description": "2600 тг/кг",
+    "price": 2600,
+    "image": "uploads/photo_2026-04-30_23-44-03.jpg",
+    "video": null,
+    "active": true,
+    "category": "остальное"
   }
 ];
 let filteredProducts = [];
