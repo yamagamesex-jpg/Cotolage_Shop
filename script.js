@@ -184,7 +184,7 @@ let products = [
     "id": "09e5a7e7-cb54-4867-b71e-c32109659613",
     "name": "Барамышки",
     "description": "Состав: сбой баранины, сбой говядины, специи ",
-    "price": 1600,
+    "price": 2000,
     "image": "uploads/46232c33-bc53-483e-b7dd-543686f0dc0f.png",
     "video": null,
     "active": true,
